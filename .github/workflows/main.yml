@@ -1,0 +1,33 @@
+name: toot-owo
+
+on: #[workflow_dispatch]
+ schedule:
+   - cron: "*/5 * * * *"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: checkout repo content
+        uses: actions/checkout@v3 # checkout the repository content to github runner
+
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8' # install the python version needed
+
+      - name: install python packages
+        run: |
+          python -m pip install --upgrade pip
+          pip install Mastodon.py
+          pip install selenium
+
+      - name: execute py script
+        env:
+         KEY: ${{ secrets.ACCESS_TOKEN }}
+         INS: ${{ vars.MAST_INSTANCE }}
+        run: python ib-to-mast-toot.py
+
+      - name: keep cron alive
+        uses: gautamkrishnar/keepalive-workflow@v1
