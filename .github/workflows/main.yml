@@ -3,6 +3,7 @@ name: toot-ib-updates
 on: #[workflow_dispatch]
  schedule:
    - cron: "*/5 * * * *"
+ workflow_dispatch:
 
 jobs:
   build:
