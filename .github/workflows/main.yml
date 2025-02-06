@@ -26,11 +26,6 @@ jobs:
           pip install chromedriver-autoinstaller
           pip install PyVirtualDisplay
 
-      #- name: install chrome
-      #  uses: browser-actions/setup-chrome@latest
-
-      #- run: chrome --version
-
       - name: execute py script
         env:
          KEY: ${{ secrets.ACCESS_TOKEN }}
