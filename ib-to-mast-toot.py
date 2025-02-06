@@ -9,7 +9,7 @@ from mastodon import Mastodon
 mast_tag = "Eigrest_IB_bot"
 
 # create webdriver object 
-driver = webdriver.Firefox()
+driver = webdriver.Chrome()
 
 driver.get("https://infinitebacklog.net/users/eigrest")
 WebDriverWait(driver, 20).until(EC.visibility_of_all_elements_located((By.CLASS_NAME, "post")))

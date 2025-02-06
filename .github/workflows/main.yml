@@ -24,6 +24,11 @@ jobs:
           pip install Mastodon.py
           pip install selenium
 
+      - name: install chrome
+        uses: browser-actions/setup-chrome@latest
+
+      - run: chrome --version
+
       - name: execute py script
         env:
          KEY: ${{ secrets.ACCESS_TOKEN }}
