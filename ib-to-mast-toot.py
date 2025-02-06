@@ -1,15 +1,33 @@
 import os
 
+import chromedriver_autoinstaller
+from mastodon import Mastodon
+from pyvirtualdisplay import Display
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from mastodon import Mastodon
+from selenium.webdriver.support.wait import WebDriverWait
 
 mast_tag = "Eigrest_IB_bot"
 
-# create webdriver object 
-driver = webdriver.Firefox()
+# create webdriver object
+display = Display(visible=0, size=(800, 800))
+display.start()
+
+chromedriver_autoinstaller.install()  # Check if the current version of chromedriver exists
+# and if it doesn't exist, download it automatically,
+# then add chromedriver to path
+
+chrome_options = webdriver.ChromeOptions()
+options = [
+    "--window-size=1200,1200",
+    "--ignore-certificate-errors"
+]
+
+for option in options:
+    chrome_options.add_argument(option)
+
+driver = webdriver.Chrome(options=chrome_options)
 
 driver.get("https://infinitebacklog.net/users/eigrest")
 WebDriverWait(driver, 20).until(EC.visibility_of_all_elements_located((By.CLASS_NAME, "post")))
