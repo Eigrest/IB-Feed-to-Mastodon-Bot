@@ -23,11 +23,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install Mastodon.py
           pip install selenium
+          pip install chromedriver-autoinstaller
+          pip install PyVirtualDisplay
 
-      - name: install chrome
-        uses: browser-actions/setup-chrome@latest
+      #- name: install chrome
+      #  uses: browser-actions/setup-chrome@latest
 
-      - run: chrome --version
+      #- run: chrome --version
 
       - name: execute py script
         env:
