@@ -1,15 +1,48 @@
 import os
 
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+import chromedriver_autoinstaller
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from mastodon import Mastodon
+from pyvirtualdisplay import Display
 
 mast_tag = "Eigrest_IB_bot"
 
-# create webdriver object 
-driver = webdriver.Chrome()
+# create webdriver object
+display = Display(visible=0, size=(800, 800))
+display.start()
+
+chromedriver_autoinstaller.install()  # Check if the current version of chromedriver exists
+# and if it doesn't exist, download it automatically,
+# then add chromedriver to path
+
+chrome_options = webdriver.ChromeOptions()
+# Add your options as needed
+options = [
+    # Define window size here
+    "--window-size=1200,1200",
+    "--ignore-certificate-errors"
+
+    # "--headless",
+    # "--disable-gpu",
+    # "--window-size=1920,1200",
+    # "--ignore-certificate-errors",
+    # "--disable-extensions",
+    # "--no-sandbox",
+    # "--disable-dev-shm-usage",
+    # '--remote-debugging-port=9222'
+]
+
+for option in options:
+    chrome_options.add_argument(option)
+
+driver = webdriver.Chrome(options=chrome_options)
+
+driver.get('http://github.com')
 
 driver.get("https://infinitebacklog.net/users/eigrest")
 WebDriverWait(driver, 20).until(EC.visibility_of_all_elements_located((By.CLASS_NAME, "post")))
