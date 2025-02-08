@@ -39,7 +39,7 @@ for post in feed:
 posts_texts = []
 for post in posts:
     # remove X days ago text
-    clean_post = re.sub(r"- \d+ days ago", "", post.text)
+    clean_post = re.sub(r"- \d+.*", "", post.text)
     posts_texts.append(clean_post)
 
 driver.close()
@@ -52,12 +52,16 @@ mastodon = Mastodon(
 last_toot_text = mastodon.account_statuses(mastodon.me().get("id"),False,False,
                                 True,True,mast_tag,
                                 None,None,None,None)[0].content
+print("last toot:")
+print(last_toot_text)
 
 #get to chosen post_text after latest toot posted
 i=0
 chosen_post = ""
 uptodate = False
+print("posible toots:")
 for post_text in posts_texts:
+    print(post_text)
     if post_text.lower() in last_toot_text.lower():
         if i<=0:
             print("Toots up to date")
@@ -73,5 +77,7 @@ if not uptodate and chosen_post:
     text_to_publish = chosen_post + " #" + mast_tag
     print("time to toot! " + text_to_publish)
     mastodon.status_post(text_to_publish,None,None,False,"unlisted")
-else:
+elif uptodate:
     print("no tooting today")
+else:
+    print("something wrong happen.")
