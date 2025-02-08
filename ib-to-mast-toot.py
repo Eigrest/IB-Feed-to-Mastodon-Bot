@@ -1,4 +1,5 @@
 import os
+import re
 
 import chromedriver_autoinstaller
 from mastodon import Mastodon
@@ -37,7 +38,9 @@ for post in feed:
     posts.extend(post.find_elements("xpath", './*[contains(@class, "message-post")]'))
 posts_texts = []
 for post in posts:
-    posts_texts.append(post.text)
+    # remove X days ago text
+    clean_post = re.sub(r"- \d+ days ago", "", post.text)
+    posts_texts.append(clean_post)
 
 driver.close()
 
