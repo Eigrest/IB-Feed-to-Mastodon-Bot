@@ -57,7 +57,9 @@ last_toot_text = mastodon.account_statuses(mastodon.me().get("id"),False,False,
 i=0
 chosen_post = ""
 uptodate = False
+print("posible toots:")
 for post_text in posts_texts:
+    print(post_text)
     if post_text.lower() in last_toot_text.lower():
         if i<=0:
             print("Toots up to date")
@@ -73,5 +75,7 @@ if not uptodate and chosen_post:
     text_to_publish = chosen_post + " #" + mast_tag
     print("time to toot! " + text_to_publish)
     mastodon.status_post(text_to_publish,None,None,False,"unlisted")
-else:
+else if uptodate:
     print("no tooting today")
+else:
+    print("something wrong happen.")
