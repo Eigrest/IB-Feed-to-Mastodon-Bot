@@ -39,7 +39,7 @@ for post in feed:
 posts_texts = []
 for post in posts:
     # remove X days ago text
-    clean_post = re.sub(r"- \d+ days ago", "", post.text)
+    clean_post = re.sub(r"- \d+.*", "", post.text)
     posts_texts.append(clean_post)
 
 driver.close()
@@ -52,6 +52,8 @@ mastodon = Mastodon(
 last_toot_text = mastodon.account_statuses(mastodon.me().get("id"),False,False,
                                 True,True,mast_tag,
                                 None,None,None,None)[0].content
+print("last toot:")
+print(last_toot_text)
 
 #get to chosen post_text after latest toot posted
 i=0
