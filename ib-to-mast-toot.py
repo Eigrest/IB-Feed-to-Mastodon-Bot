@@ -75,7 +75,7 @@ if not uptodate and chosen_post:
     text_to_publish = chosen_post + " #" + mast_tag
     print("time to toot! " + text_to_publish)
     mastodon.status_post(text_to_publish,None,None,False,"unlisted")
-else if uptodate:
+elif uptodate:
     print("no tooting today")
 else:
     print("something wrong happen.")
