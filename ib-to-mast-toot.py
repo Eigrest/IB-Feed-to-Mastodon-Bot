@@ -5,6 +5,7 @@ import chromedriver_autoinstaller
 from dotenv import load_dotenv
 from mastodon import Mastodon
 from selenium import webdriver
+from pyvirtualdisplay import Display
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
@@ -77,7 +78,22 @@ def get_next_game_update():
 ########################################
 
 # Create webdriver that Selenium uses to access the web page.
-chromedriver_autoinstaller.install()
+display = Display(visible=0, size=(800, 800))
+display.start()
+
+chromedriver_autoinstaller.install()  # Check if the current version of chromedriver exists
+# and if it doesn't exist, download it automatically,
+# then add chromedriver to path
+
+chrome_options = webdriver.ChromeOptions()
+options = [
+    "--window-size=1200,1200",
+    "--ignore-certificate-errors"
+]
+
+for option in options:
+    chrome_options.add_argument(option)
+
 driver = webdriver.Chrome()
 load_page("https://infinitebacklog.net/users/eigrest")
 
