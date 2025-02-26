@@ -31,6 +31,7 @@ pure_eval==0.2.3
 Pygments==2.19.1
 PySocks==1.7.1
 python-dateutil==2.9.0.post0
+python-dotenv==1.0.1
 python-magic==0.4.27
 PyVirtualDisplay==3.0
 pyzmq==26.2.1
