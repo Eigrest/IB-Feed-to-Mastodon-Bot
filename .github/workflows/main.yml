@@ -17,7 +17,7 @@ jobs:
         id: setup-firefox
         uses: browser-actions/setup-firefox@v1
         with:
-          firefox-version: "134"  
+          firefox-version: "134.0"  
 
       - name: setup python
         uses: actions/setup-python@v4
