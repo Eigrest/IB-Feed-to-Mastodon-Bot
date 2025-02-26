@@ -13,12 +13,6 @@ jobs:
       - name: checkout repo content
         uses: actions/checkout@v3 # checkout the repository content to github runner
 
-      - name: Setup firefox
-        id: setup-firefox
-        uses: browser-actions/setup-firefox@v1
-        with:
-          firefox-version: "134.0"  
-
       - name: setup python
         uses: actions/setup-python@v4
         with:

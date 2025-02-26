@@ -1,5 +1,6 @@
 import os
 import re
+import chromedriver_autoinstaller
 
 from dotenv import load_dotenv
 from mastodon import Mastodon
@@ -76,7 +77,8 @@ def get_next_game_update():
 ########################################
 
 # Create webdriver that Selenium uses to access the web page.
-driver = webdriver.Firefox()
+chromedriver_autoinstaller.install()
+driver = webdriver.Chrome()
 load_page("https://infinitebacklog.net/users/eigrest")
 
 game_updates_elements = filter_game_updates()
