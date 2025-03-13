@@ -5,9 +5,8 @@ import chromedriver_autoinstaller
 from dotenv import load_dotenv
 from mastodon import Mastodon
 from selenium import webdriver
-from pyvirtualdisplay import Display
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
 
 MAST_TAG = "Eigrest_IB_bot"
@@ -15,7 +14,7 @@ MAST_TAG = "Eigrest_IB_bot"
 def load_page(uri):
     driver.get(uri)
     # Waits page to load.
-    WebDriverWait(driver, 20).until(EC.visibility_of_all_elements_located((By.CLASS_NAME, "post")))
+    WebDriverWait(driver, 20).until(ec.visibility_of_all_elements_located((By.CLASS_NAME, "post")))
 
 def filter_game_updates():
     feed = driver.find_elements("xpath", '//*[contains(@class,"COLLECTION_GAME_COMPLETION") or contains(@class,"COLLECTION_GAME_STATUS")]')
@@ -24,7 +23,7 @@ def filter_game_updates():
         for post in feed
         for element in post.find_elements("xpath", './*[contains(@class, "message-post")]')
     ]
-            
+
 def format_game_updates_text():
     return [
         # removes x days ago text and adds rating
@@ -44,22 +43,22 @@ def add_game_ratings(element):
     )
 
 def get_latest_bot_toot():
-    last_toot = mastodon.account_statuses(mastodon.me().get("id"),False,False,
+    latest_toot = mastodon.account_statuses(mastodon.me().get("id"),False,False,
                                     True,True,MAST_TAG,
                                     None,None,None,None)[0].content
     #normalize toot for later matching
-    last_toot = re.sub(r'\s+', ' ', last_toot.replace('<br />', ' ').replace('<p>', '').replace('</p>', '').strip()).lower()
-    
+    latest_toot = re.sub(r'\s+', ' ', latest_toot.replace('<br />', ' ').replace('<p>', '').replace('</p>', '').strip()).lower()
+
     print("last toot:")
-    print(last_toot)
-    return last_toot
+    print(latest_toot)
+    return latest_toot
 
 def is_game_update_in_toot(game_update):
     normalized_game_update = " ".join(game_update.split()).lower()
     if normalized_game_update in last_toot:
         return True
     else:
-        return False   
+        return False
 
 def post_game_update_toot(game_update):
     text_to_publish = game_update + " #" + MAST_TAG
@@ -73,14 +72,11 @@ def get_next_game_update():
         print(game_update)
         if is_game_update_in_toot(game_update):
             return game_updates_list[i-1]
- 
+
 
 ########################################
 
 # Create webdriver that Selenium uses to access the web page.
-display = Display(visible=0, size=(800, 800))
-display.start()
-
 chromedriver_autoinstaller.install()  # Check if the current version of chromedriver exists
 # and if it doesn't exist, download it automatically,
 # then add chromedriver to path
@@ -115,8 +111,9 @@ last_toot = get_latest_bot_toot()
 if is_game_update_in_toot(game_updates_list[0]):
     print("Toots up to date. No tooting today.")
 
-# if no update partially matches with the last toot post oldest update
+# if no update partially matches with the last toot post the oldest update
 elif not any(is_game_update_in_toot(update) for update in game_updates_list):
+    print("No matches, posting oldest update.")
     post_game_update_toot(game_updates_list[-1])
 
 # get following update after last toot
