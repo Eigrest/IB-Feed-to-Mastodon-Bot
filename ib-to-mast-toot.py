@@ -111,7 +111,7 @@ mastodon = Mastodon(
 
 last_toot = get_latest_bot_toot()
 
-if game_updates_list:
+if len(game_updates_list) > 0:
     # if latest update was already posted no toots today.
     if is_game_update_in_toot(game_updates_list[0]):
         print("Toots up to date. No tooting today.")
