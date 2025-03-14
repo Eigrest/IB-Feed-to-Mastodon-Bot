@@ -111,15 +111,18 @@ mastodon = Mastodon(
 
 last_toot = get_latest_bot_toot()
 
-# if latest update was already posted no toots today. 
-if is_game_update_in_toot(game_updates_list[0]):
-    print("Toots up to date. No tooting today.")
+if game_updates_list:
+    # if latest update was already posted no toots today.
+    if is_game_update_in_toot(game_updates_list[0]):
+        print("Toots up to date. No tooting today.")
 
-# if no update partially matches with the last toot post the oldest update
-elif not any(is_game_update_in_toot(update) for update in game_updates_list):
-    print("No matches, posting oldest update.")
-    post_game_update_toot(game_updates_list[-1])
+    # if no update partially matches with the last toot post the oldest update
+    elif not any(is_game_update_in_toot(update) for update in game_updates_list):
+        print("No matches, posting oldest update.")
+        post_game_update_toot(game_updates_list[-1])
 
-# get following update after last toot
+    # get following update after last toot
+    else:
+        post_game_update_toot(get_next_game_update())
 else:
-    post_game_update_toot(get_next_game_update())
+    print("No game updates right now")
