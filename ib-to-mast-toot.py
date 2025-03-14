@@ -78,7 +78,7 @@ def get_next_game_update():
 ########################################
 
 # Create webdriver that Selenium uses to access the web page.
-display = Display(visible=0, size=(800, 800))
+display = Display(visible=False, size=(800, 800))
 display.start()
 
 chromedriver_autoinstaller.install()  # Check if the current version of chromedriver exists
